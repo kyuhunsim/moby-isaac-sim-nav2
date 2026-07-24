@@ -1,0 +1,15 @@
+{
+  "scenarios": {
+    "simple_room_example": {
+      "description": "Example route. Measure these coordinates in the final simple-room stage before use.",
+      "motion_mode": "kinematic",
+      "speed_mps": 0.5,
+      "start_delay_s": 0.0,
+      "loops": "inf",
+      "waypoints": [
+        [0.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0]
+      ]
+    }
+  }
+}

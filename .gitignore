@@ -1,0 +1,16 @@
+build/
+install/
+log/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+results/
+*.bag
+*.db3
+*.csv
+*.jsonl
+*.tmp
+.idea/
+.vscode/

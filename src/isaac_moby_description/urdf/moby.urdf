@@ -1,0 +1,493 @@
+<?xml version="1.0" ?>
+<robot name="moby_rp" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <material name="metal_white">
+    <color rgba="0.866 0.866 0.890 1.0"/>
+  </material>
+  <material name="metal_grey">
+    <color rgba="0.501 0.501 0.501 1.0"/>
+  </material>
+  <material name="indy_white">
+    <color rgba="0.894 0.894 0.894 1.0"/>
+  </material>
+  <material name="black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+  </material>
+
+  <link name="base_footprint"/>
+
+  <joint name="footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0.0 0.0 0.078818" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_link">
+    </link>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="bottom_frame"/>
+    <origin xyz="0 0 0.2" rpy="0 0 0"/>
+  </joint>
+
+  <link name="bottom_frame">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Bottom_frame.stl"/>
+      </geometry>
+      <material name="metal_grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Bottom_frame.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="48.900000"/>
+      <origin xyz="0.067079 -0.000077 -0.040652" rpy="0 0 0"/>
+      <inertia ixx="0.090000" iyy="0.090000" izz="5.762030" ixy="0.000253" iyz="-0.000153" ixz="0.133345"/>
+    </inertial>
+  </link>
+
+  <joint name="frame_joint" type="fixed">
+    <parent link="bottom_frame"/>
+    <child link="top_frame"/>
+    <origin xyz="0 0 0.2" rpy="0 0 0"/>
+  </joint>
+
+  <link name="top_frame">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Top_frame.stl"/>
+      </geometry>
+      <material name="metal_white"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Top_frame.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="26.877000"/>
+      <origin xyz="-0.001287 -0.000089 0.028821" rpy="0 0 0"/>
+      <inertia ixx="0.090000" iyy="0.090000" izz="3.046105" ixy="-0.000003" iyz="0.000069" ixz="0.000997"/>
+    </inertial>
+  </link>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0.183 0 0.210" rpy="0 0 0"/>
+  </joint>
+  <link name="imu_link"/>
+
+  <joint name="fl_rot_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="fl_rot_link"/>
+    <origin xyz="0.393 0.2054 0.1704" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="60.0" velocity="10.0"/>
+    <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="fl_rot_link">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Left_rot_motor.stl"/></geometry>
+      <material name="metal_white"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Left_rot_motor.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="4.060000"/>
+      <origin xyz="0.000459 0.024470 -0.067097"/>
+      <inertia ixx="0.045950" iyy="0.038956" izz="0.016740" ixy="-0.000046" iyz="0.006666" ixz="0.000125"/>
+    </inertial>
+  </link>
+
+  <joint name="fl_tract_joint" type="continuous">
+    <parent link="fl_rot_link"/>
+    <child link="fl_tract_link"/>
+    <origin xyz="0 0 -0.150218" rpy="-1.570796327 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10000.0" velocity="10.0"/>
+    <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="fl_tract_link">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Left_wheel.stl"/></geometry>
+      <material name="metal_grey"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Left_wheel.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="11.076000"/>
+      <origin xyz="0.0 -0.000162 0.000717"/>
+      <inertia ixx="0.049071" iyy="0.049071" izz="0.072340" ixy="0.0" iyz="0.000001" ixz="0.0"/>
+    </inertial>
+  </link>
+
+
+  <joint name="fr_rot_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="fr_rot_link"/>
+    <origin xyz="0.393 -0.2054 0.1704" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="60.0" velocity="10.0"/>
+    <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="fr_rot_link">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Right_rot_motor.stl"/></geometry>
+      <material name="metal_white"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Right_rot_motor.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="4.060000"/>
+      <origin xyz="0.000459 0.024470 -0.067097"/>
+      <inertia ixx="0.045950" iyy="0.038956" izz="0.016740" ixy="-0.000046" iyz="0.006666" ixz="0.000125"/>
+    </inertial>
+  </link>
+
+  <joint name="fr_tract_joint" type="continuous">
+    <parent link="fr_rot_link"/>
+    <child link="fr_tract_link"/>
+    <origin xyz="0 0 -0.150218" rpy="-1.570796327 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10000.0" velocity="10.0"/>
+    <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="fr_tract_link">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Right_wheel.stl"/></geometry>
+      <material name="metal_grey"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Right_wheel.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="11.076000"/>
+      <origin xyz="0.0 -0.000162 0.000717"/>
+      <inertia ixx="0.049071" iyy="0.049071" izz="0.072340" ixy="0.0" iyz="0.000001" ixz="0.0"/>
+    </inertial>
+  </link>
+
+  <joint name="rl_rot_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="rl_rot_link"/>
+    <origin xyz="-0.393 0.2054 0.1704" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="60.0" velocity="10.0"/>
+    <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="rl_rot_link">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Left_rot_motor.stl"/></geometry>
+      <material name="metal_white"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Left_rot_motor.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="4.060000"/>
+      <origin xyz="0.000459 0.024470 -0.067097"/>
+      <inertia ixx="0.045950" iyy="0.038956" izz="0.016740" ixy="-0.000046" iyz="0.006666" ixz="0.000125"/>
+    </inertial>
+  </link>
+
+  <joint name="rl_tract_joint" type="continuous">
+    <parent link="rl_rot_link"/>
+    <child link="rl_tract_link"/>
+    <origin xyz="0 0 -0.150218" rpy="-1.570796327 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10000.0" velocity="10.0"/>
+    <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="rl_tract_link">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Left_wheel.stl"/></geometry>
+      <material name="metal_grey"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Left_wheel.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="11.076000"/>
+      <origin xyz="0.0 -0.000162 0.000717"/>
+      <inertia ixx="0.049071" iyy="0.049071" izz="0.072340" ixy="0.0" iyz="0.000001" ixz="0.0"/>
+    </inertial>
+  </link>
+
+  <joint name="rr_rot_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="rr_rot_link"/>
+    <origin xyz="-0.393 -0.2054 0.1704" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="60.0" velocity="10.0"/>
+    <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="rr_rot_link">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Right_rot_motor.stl"/></geometry>
+      <material name="metal_white"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Right_rot_motor.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="4.060000"/>
+      <origin xyz="0.000459 0.024470 -0.067097"/>
+      <inertia ixx="0.045950" iyy="0.038956" izz="0.016740" ixy="-0.000046" iyz="0.006666" ixz="0.000125"/>
+    </inertial>
+  </link>
+
+  <joint name="rr_tract_joint" type="continuous">
+    <parent link="rr_rot_link"/>
+    <child link="rr_tract_link"/>
+    <origin xyz="0 0 -0.150218" rpy="-1.570796327 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10000.0" velocity="10.0"/>
+    <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="rr_tract_link">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Right_wheel.stl"/></geometry>
+      <material name="metal_grey"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Right_wheel.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="11.076000"/>
+      <origin xyz="0.0 -0.000162 0.000717"/>
+      <inertia ixx="0.049071" iyy="0.049071" izz="0.072340" ixy="0.0" iyz="0.000001" ixz="0.0"/>
+    </inertial>
+  </link>
+
+  <joint name="base_arm" type="fixed">
+    <parent link="base_link"/>
+    <child link="link0"/>
+    <origin xyz="0.37010 0 0.44550" rpy="0 0 0"/>
+  </joint>
+
+  <link name="link0">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Indy7_v2_0.stl"/></geometry>
+      <material name="indy_white"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Indy7_v2_0.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="1.66957888"/>
+      <origin xyz="0.001330 -0.000002 0.031637"/>
+      <inertia ixx="0.006558" iyy="0.006391" izz="0.007917" ixy="0.000001" iyz="-0.000000" ixz="0.000026"/>
+    </inertial>
+  </link>
+
+  <joint name="joint0" type="revolute">
+    <parent link="link0"/>
+    <child link="link1"/>
+    <origin xyz="0 0 0.0775" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.0543" upper="3.0543" effort="431.97" velocity="2.6179"/> <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="link1">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Indy7_v2_1.stl"/></geometry>
+      <material name="indy_white"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Indy7_v2_1.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="11.43955917"/>
+      <origin xyz="-0.000273 -0.043487 0.132167"/>
+      <inertia ixx="0.350971" iyy="0.304358" izz="0.060480" ixy="0.000130" iyz="-0.110726" ixz="-0.000427"/>
+    </inertial>
+  </link>
+
+  <joint name="joint1" type="revolute">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <origin xyz="0 -0.109 0.222" rpy="1.570796327 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.0543" upper="3.0543" effort="431.97" velocity="2.6179"/>
+    <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="link2">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Indy7_v2_2.stl"/></geometry>
+      <material name="indy_white"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Indy7_v2_2.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="6.11383823"/>
+      <origin xyz="-0.000108 0.290718 0.045882"/>
+      <inertia ixx="0.746556" iyy="0.038504" izz="0.722000" ixy="-0.000327" iyz="0.053145" ixz="0.000004"/>
+    </inertial>
+  </link>
+
+  <joint name="joint2" type="revolute">
+    <parent link="link2"/>
+    <child link="link3"/>
+    <origin xyz="0 0.45 -0.0305" rpy="0 0 3.1415926536"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.0543" upper="3.0543" effort="197.23" velocity="2.6179"/>
+    <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="link3">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Indy7_v2_3.stl"/></geometry>
+      <material name="indy_white"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Indy7_v2_3.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="2.68211719"/>
+      <origin xyz="0.000066 -0.168022 -0.070256"/>
+      <inertia ixx="0.113732" iyy="0.016272" izz="0.100214" ixy="-0.000036" iyz="0.033557" ixz="-0.000012"/>
+    </inertial>
+  </link>
+
+  <joint name="joint3" type="revolute">
+    <parent link="link3"/>
+    <child link="link4"/>
+    <origin xyz="0 -0.267 -0.075" rpy="-1.570796327 0 3.1415926536"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.0543" upper="3.0543" effort="79.79" velocity="3.14159"/> <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="link4">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Indy7_v2_4.stl"/></geometry>
+      <material name="indy_white"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Indy7_v2_4.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="2.12830848"/>
+      <origin xyz="-0.000268 -0.071059 0.076453"/>
+      <inertia ixx="0.027952" iyy="0.014398" izz="0.014955" ixy="0.000039" iyz="-0.012650" ixz="-0.000047"/>
+    </inertial>
+  </link>
+
+  <joint name="joint4" type="revolute">
+    <parent link="link4"/>
+    <child link="link5"/>
+    <origin xyz="0 -0.114 0.0835" rpy="1.570796327 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.0543" upper="3.0543" effort="79.79" velocity="3.14159"/>
+    <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="link5">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Indy7_v2_5.stl"/></geometry>
+      <material name="indy_white"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Indy7_v2_5.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="2.32413397"/>
+      <origin xyz="-0.000225 -0.003541 0.076507"/>
+      <inertia ixx="0.017718" iyy="0.015936" izz="0.003583" ixy="0.000009" iyz="-0.000696" ixz="-0.000043"/>
+    </inertial>
+  </link>
+
+  <joint name="joint5" type="revolute">
+    <parent link="link5"/>
+    <child link="link6"/>
+    <origin xyz="0 0.052 0.085" rpy="-1.570796327 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.7524" upper="3.7524" effort="79.79" velocity="3.14159"/> <dynamics damping="0.1" friction="10.0"/>
+  </joint>
+
+  <link name="link6">
+    <visual>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/visual/Indy7_v2_6.stl"/></geometry>
+      <material name="indy_white"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://isaac_moby_description/model/meshes/moby_rp/collision/Indy7_v2_6.stl"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="0.39652271"/>
+      <origin xyz="0 -0.000715 0.032191"/>
+      <inertia ixx="0.000778" iyy="0.000765" izz="0.000512" ixy="0.0" iyz="-0.000006" ixz="0.0"/>
+    </inertial>
+  </link>
+
+  <link name="tcp"/>
+  <joint name="joint_tcp" type="fixed">
+    <parent link="link6"/>
+    <child link="tcp"/>
+    <origin xyz="0 0 0.06" rpy="0 0 0"/>
+  </joint>
+
+  <link name="front_camera_link"/>
+  <joint name="front_camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="front_camera_link"/>
+    <origin xyz="0.48515 0 0.28250" rpy="0 0 0"/>
+  </joint>
+
+  <link name="rear_camera_link"/>
+  <joint name="rear_camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="rear_camera_link"/>
+    <origin xyz="-0.48515 0 0.28250" rpy="0 0 3.1415926536"/>
+  </joint>
+
+  <link name="left_camera_link"/>
+  <joint name="left_camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="left_camera_link"/>
+    <origin xyz="0 0.28505 0.28250" rpy="0 0 1.570796327"/>
+  </joint>
+
+  <link name="right_camera_link"/>
+  <joint name="right_camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="right_camera_link"/>
+    <origin xyz="0 -0.28505 0.28250" rpy="0 0 -1.570796327"/>
+  </joint>
+
+  <link name="front_lidar_link"/>
+  <joint name="front_lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="front_lidar_link"/>
+    <origin xyz="0.457001 -0.257001 0.27940" rpy="3.1415926536 0 -0.7853981634"/>
+  </joint>
+
+  <link name="rear_lidar_link"/>
+  <joint name="rear_lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="rear_lidar_link"/>
+    <origin xyz="-0.457001 0.257001 0.27940" rpy="3.1415926536 0 2.35619449019"/>
+  </joint>
+
+</robot>
