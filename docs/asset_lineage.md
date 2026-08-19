@@ -11,7 +11,7 @@ src/isaac_moby_sim/assets/scenes/moby_simple_room_final.usd
 It was copied from:
 
 ```text
-/home/rise/isaac-sim_5.1.0/usd/moby_simple_room_final.usd
+$ISAAC_SIM_ROOT/usd/moby_simple_room_final.usd
 ```
 
 The older `moby_simple_room.usd` and `moby_planning_test_보관.usd` files are not part of
