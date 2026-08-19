@@ -2,7 +2,7 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
@@ -100,7 +100,10 @@ def generate_launch_description():
             DeclareLaunchArgument("map_to_odom_yaw", default_value="0.0"),
             map_to_odom,
             map_server,
-            map_lifecycle,
+            # map_server registers its lifecycle services asynchronously.  If
+            # its manager starts in the same launch tick, it can send CONFIGURE
+            # before that registration completes and leave RViz with a 0×0 map.
+            TimerAction(period=2.0, actions=[map_lifecycle]),
             navigation,
             rviz,
         ]

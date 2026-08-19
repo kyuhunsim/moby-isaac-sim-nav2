@@ -414,33 +414,16 @@ def ensure_character_collision(stage, character_prim_path):
     )
 
 
-def ensure_kinematic_person_proxy(stage, requested_prim_path):
-    """Create a visible capsule proxy when the authored stage has no character."""
-    from pxr import Gf, Sdf, UsdGeom
-
-    requested = stage.GetPrimAtPath(requested_prim_path)
-    if requested.IsValid():
+def ensure_people_character(stage, requested_prim_path):
+    """Require an authored Isaac People character, never a geometric proxy."""
+    if stage.GetPrimAtPath(requested_prim_path).IsValid():
         return requested_prim_path
-
-    proxy_path = "/World/People/Person"
-    root = UsdGeom.Xform.Define(stage, Sdf.Path(proxy_path))
-    root_xform = UsdGeom.Xformable(root.GetPrim())
-    root_xform.AddTranslateOp().Set(Gf.Vec3d(0.0, 0.0, 0.0))
-    root_xform.AddOrientOp().Set(Gf.Quatf(1.0, Gf.Vec3f(0.0, 0.0, 0.0)))
-
-    body = UsdGeom.Capsule.Define(stage, Sdf.Path(f"{proxy_path}/Body"))
-    body.CreateRadiusAttr(0.35)
-    body.CreateHeightAttr(1.35)
-    body_xform = UsdGeom.Xformable(body.GetPrim())
-    body_xform.AddTranslateOp().Set(Gf.Vec3d(0.0, 0.0, 0.82))
-    body.CreateDisplayColorAttr().Set([Gf.Vec3f(0.15, 0.45, 0.95)])
-    body.CreateDisplayOpacityAttr().Set([1.0])
-    print(
-        f"People proxy created: {proxy_path} "
-        "(simple visible capsule; use an authored Character prim for animation)",
-        flush=True,
+    raise RuntimeError(
+        f"Isaac People character not found: {requested_prim_path}. "
+        "The supplied simple-room USD includes "
+        "/World/Characters/Character; custom USDs must include an authored "
+        "Isaac People character too."
     )
-    return proxy_path
 
 
 def set_people_start_pose(prim_path, waypoint):
@@ -842,12 +825,10 @@ def main():
 
         # The authored USD's character behavior expects omni.anim.people to be
         # registered before the stage is composed.  This is also the order
-        # used by the standalone USD session.  Keep the deferred path only for
-        # the headless deterministic diagnostic, where OGN registration can be
-        # expensive on machines without a renderer.
-        preload_people = people_enabled and (
-            people_config["motion_mode"] == "people" or not args.headless
-        )
+        # The embedded Biped_Setup graph must observe the stage-open event to
+        # create its CharacterManager binding, including headless kinematic
+        # runs.
+        preload_people = people_enabled
         if preload_people:
             enable_extension("omni.anim.people")
         if not args.no_ros_bridge:
@@ -883,18 +864,11 @@ def main():
             app.update()
 
         stage = omni.usd.get_context().get_stage()
-        if people_enabled and people_config["motion_mode"] == "kinematic":
-            args.character_prim = ensure_kinematic_person_proxy(
-                stage, args.character_prim
-            )
-        elif people_enabled and not stage.GetPrimAtPath(
-            args.character_prim
-        ).IsValid():
-            raise RuntimeError(
-                f"People motion mode requires an authored character prim: "
-                f"{args.character_prim}. Use --people-motion-mode=kinematic "
-                "for the simple-room capsule proxy."
-            )
+        if people_enabled:
+            args.character_prim = ensure_people_character(stage, args.character_prim)
+            # Let Kit resolve the embedded animation graph and asset references
+            # before the motion controller addresses the character.
+            app.update()
 
         if people_enabled and not preload_people:
             enable_extension("omni.anim.people")
