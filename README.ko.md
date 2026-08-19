@@ -8,10 +8,12 @@
 
 </div>
 
-[![Warehouse navigation demo](docs/media/warehouse_nav_demo.jpg)](docs/media/warehouse_nav_demo.mp4)
+<div align="center">
+  <img src="docs/media/warehouse_nav_demo.gif" alt="Warehouse navigation demo" width="640">
 
-> 미리보기를 클릭하면 15초 데모 영상을 볼 수 있습니다. 이 영상은 현재 `simple_room`이
-> 아니라 이전 warehouse map에서 녹화한 결과입니다.
+  <p>이전 warehouse map에서 녹화한 15초 자율주행 데모입니다. 현재 <code>simple_room</code> 장면의 결과는 아닙니다.<br>
+  <a href="docs/media/warehouse_nav_demo.mp4">원본 MP4 열기</a></p>
+</div>
 
 ## 핵심 기능
 
