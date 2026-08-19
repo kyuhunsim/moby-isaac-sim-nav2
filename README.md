@@ -8,10 +8,12 @@
 
 </div>
 
-![Warehouse navigation demo](docs/media/warehouse_nav_demo.gif)
+<div align="center">
+  <img src="docs/media/warehouse_nav_demo.gif" alt="Warehouse navigation demo" width="640">
 
-> A 15-second navigation demo recorded in an earlier warehouse map, not the
-> current `simple_room` scene. [Open the original MP4](docs/media/warehouse_nav_demo.mp4).
+  <p>A 15-second navigation demo recorded in an earlier warehouse map, not the current <code>simple_room</code> scene.<br>
+  <a href="docs/media/warehouse_nav_demo.mp4">Open the original MP4</a></p>
+</div>
 
 ## Highlights
 
