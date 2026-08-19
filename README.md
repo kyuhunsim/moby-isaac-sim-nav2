@@ -8,10 +8,10 @@
 
 </div>
 
-[![Warehouse navigation demo](docs/media/warehouse_nav_demo.jpg)](docs/media/warehouse_nav_demo.mp4)
+![Warehouse navigation demo](docs/media/warehouse_nav_demo.gif)
 
-> Click the preview to play a 15-second navigation demo. It was recorded in an
-> earlier warehouse map, not the current `simple_room` scene.
+> A 15-second navigation demo recorded in an earlier warehouse map, not the
+> current `simple_room` scene. [Open the original MP4](docs/media/warehouse_nav_demo.mp4).
 
 ## Highlights
 
